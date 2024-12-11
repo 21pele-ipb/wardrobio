@@ -2,18 +2,27 @@
 # Probably not gonna use json, compare to finance app
 #####################################################
 
-from flask import Flask, request, jsonify
+from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
 
-clothes = []
-outfits = []
+db_config = {
+    'host': 'localhost',
+    'user': 'root',
+    'password': 'nicoPau2',
+    'database': 'wardrobio'
+}
 
-@app.route('/clothes', methods=['POST'])
-def add_clothes():
-    new_clothing = request.json
-    clothes.append(new_clothing)
-    return jsonify(new_clothing), 201
+#clothes = []
+#outfits = []
+
+@app.route('/outfits')
+def outfits():
+    return render_template('outfits.html')
+
+@app.route('/wardrobe')
+def wardrobe():
+    return render_template('wardrobe.html')
 
 @app.route('/clothes/<int:clothing_id>', methods=['DELETE'])
 def delete_clothes(clothing_id):
@@ -21,11 +30,11 @@ def delete_clothes(clothing_id):
     clothes = [clothing for clothing in clothes if clothing['id'] != clothing_id]
     return '', 204
 
-@app.route('/outfits', methods=['POST'])
+@app.route('/outfitsjhb', methods=['POST'])
 def add_outfit():
     new_outfit = request.json
     outfits.append(new_outfit)
-    return jsonify(new_outfit), 201
+    return
 
 @app.route('/outfits/<int:outfit_id>', methods=['DELETE'])
 def delete_outfit(outfit_id):
@@ -39,7 +48,7 @@ def modify_outfit(outfit_id):
     for outfit in outfits:
         if outfit['id'] == outfit_id:
             outfit.update(updated_outfit)
-            return jsonify(outfit), 200
+            return
     return '', 404
 
 if __name__ == '__main__':

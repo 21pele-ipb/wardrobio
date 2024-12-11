@@ -2,6 +2,7 @@ CREATE DATABASE wardrobio;
 
 USE wardrobio;
 
+-- Lo de las seasons ya lo implementaré más adelante
 CREATE TABLE Seasons (
     season_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL
