@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outfit Creator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .outfit-form, .outfit-list {
+            margin-bottom: 20px;
+        }
+        .outfit-item {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Create an Outfit</h1>
+    <div class="outfit-form">
+        <label for="clothing-piece">Select Clothing Piece:</label>
+        <select id="clothing-piece">
+            <option value="Shirt">Shirt</option>
+            <option value="Pants">Pants</option>
+            <option value="Shoes">Shoes</option>
+            <option value="Hat">Hat</option>
+        </select>
+        <button onclick="addClothingPiece()">Add to Outfit</button>
+    </div>
+
+    <h2>Current Outfit</h2>
+    <ul id="current-outfit"></ul>
+    <button onclick="saveOutfit()">Save Outfit</button>
+
+    <h2>Saved Outfits</h2>
+    <div class="outfit-list" id="saved-outfits"></div>
+
+    <!-- Este script casi seguramente será python -->
+    <script>
+        let currentOutfit = [];
+
+        function addClothingPiece() {
+            const clothingPiece = document.getElementById('clothing-piece').value;
+            currentOutfit.push(clothingPiece);
+            updateCurrentOutfit();
+        }
+
+        function updateCurrentOutfit() {
+            const outfitList = document.getElementById('current-outfit');
+            outfitList.innerHTML = '';
+            currentOutfit.forEach((piece, index) => {
+                const listItem = document.createElement('li');
+                listItem.textContent = piece;
+                listItem.innerHTML += ` <button onclick="removeClothingPiece(${index})">Remove</button>`;
+                outfitList.appendChild(listItem);
+            });
+        }
+
+        function removeClothingPiece(index) {
+            currentOutfit.splice(index, 1);
+            updateCurrentOutfit();
+        }
+
+        function saveOutfit() {
+            if (currentOutfit.length === 0) return;
+            const savedOutfits = document.getElementById('saved-outfits');
+            const outfitDiv = document.createElement('div');
+            outfitDiv.className = 'outfit-item';
+            outfitDiv.innerHTML = `
+                <ul>
+                    ${currentOutfit.map(piece => `<li>${piece}</li>`).join('')}
+                </ul>
+                <button onclick="deleteOutfit(this)">Delete Outfit</button>
+            `;
+            savedOutfits.appendChild(outfitDiv);
+            currentOutfit = [];
+            updateCurrentOutfit();
+        }
+
+        function deleteOutfit(button) {
+            const outfitDiv = button.parentElement;
+            outfitDiv.remove();
+        }
+    </script>
+</body>
+</html>
